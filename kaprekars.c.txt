@@ -1,0 +1,104 @@
+/******************************************************************************
+This is a simple code written to prove the working of Kaprekar's 
+Constant.
+
+"Kaprekar constant, or 6174, is a constant that arises when we take
+a 4-digit integer, form the largest and smallest numbers from its 
+digits, and then subtract these two numbers.Continuing with this
+process of forming and subtracting, we will always arrive at the 
+number 6174"
+         
+
+Author : Muhmammad Sufyan Raza  
+Date   : 28.08.2023
+
+*******************************************************************************/
+
+#include <stdio.h>
+
+void swap(int* int1,int* int2)
+{
+    int tmp = *int1;
+    *int1 = *int2;
+    *int2 = tmp;
+}
+
+int sort_number(int array[4],int order_up_or_down)
+{
+    if(order_up_or_down == 0)
+    {
+        for(int i=0; i<4;i++)
+        {
+            for(int j=0 ; j<i ;j++)
+            {
+                if (array[i]<array[j])
+                {
+                    swap(&array[i],&array[j]);
+                }
+                    
+            }
+        }
+    }
+    else
+    {
+        for(int i=0; i<4;i++)
+        {
+            for(int j=0 ; j<i ;j++)
+            {
+                if (array[i] > array[j])
+                {
+                    swap(&array[i],&array[j]);
+                }
+                    
+            }
+        }
+    }
+}
+int reorder_number(int input, int ascedning_or_descending)
+{
+    int digits[4];
+    int output =0;
+    int tmp = input;
+    int power=1;
+    for(int i=0; i<4; i++)
+    {
+        digits[i] = tmp % 10;
+        tmp = tmp /10;
+        //printf("%d",digits[i]);
+    }
+    sort_number(digits,ascedning_or_descending);
+     for(int i=0; i<4; i++)
+    {
+          output = output + (digits[i] *power) ;
+          power = power*10; 
+    }
+   // printf("%d   ",output);   //uncomment to see the reordered number in each step
+    return output;
+}
+int kaprekar_operation(int input)
+{
+    int test_num =input;
+    int iteration = 0;
+    while(test_num != 6174)
+    {
+        int int1 =reorder_number(test_num, 0); // arrange ascening order
+        int int2 = reorder_number(test_num, 1); //arrange in descening order
+        test_num = int1 - int2;
+       // printf("%d  iteration no. :%d\n", test_num, iteration); //uncomment to see the difference value in each step
+        iteration++;
+        if(iteration ==50)
+            break;
+    }
+    printf("iteration for %d is %d \n",input,iteration);
+}
+
+int main()
+{
+    for(int i=1000; i<10000;i++)
+    {
+     kaprekar_operation(i);
+    }
+    printf("Hello World");
+
+    return 0;
+}
